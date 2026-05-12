@@ -1,0 +1,204 @@
+1. Nome: Tabela da Copa do Mundo de 2026
+
+2. Versão: v1.0
+
+3. Escopo:
+
+	- Objetivo: O objetivo do nosso projeto é desenvolver uma tabela intuitiva e atualizada para os interessados, tendo em vista que há hoje, na internet, inúmeras tabelas que, às vezes, demoram até dias para atualizar os resultados. 
+
+	- Público alvo: O nosso público alvo é todo aquele que se interessar pela Copa do Mundo de 2026.
+
+	- Limitações: [o que o sistema não faz]
+
+4. Requisitos Funcionais (RF):
+
+	- RF-01:
+
+5. Requisitos Não Funcionais (RNF):
+
+6. Diagramas UML:
+
+	6.1 -Diagramas de Classe:
+
+	6.2 -Diagramas de Casos de Uso (UC):
+
+7. Modelo de Dados (MER - Modelo Entidade-Relacionamento):
+
+8. Arquitetura:
+
+	- MVC
+	- Monolito
+	- Microsserviços
+	- REST
+	- Camadas (apresentação + regra de negócios + dados)
+
+9. Plano de Testes:
+
+10. Cronograma:
+
+11. DevOps e Implantação:
+
+	- Versionamento (Git)
+	- Estratégia de Backup
+	- Ambiente de produção (Local, Cloud, VPS, Docker, Host, Compatilhamento, etc.)
+
+12. Segurança e LGPD:
+
+	- Política de Privacidade
+		- Informar quais dados serão coletados
+		- Como esses dados serão usados
+	- Proteção dos dados
+
+		- APENAS DE PESSOAS FÍSICAS EM RELAÇÃO A EMPRESAS
+
+		Ameaça = Agente + Mecanismo + Ativo 
+
+			- Lista de ameaças
+			- Como mitigá-las
+
+13. Investimento: 
+
+	- Fórmula = horas * valor da hora
+
+==================================================================================================================================================
+
+ANÁLISE DE REQUISITOS:
+
+RF-01: Gestão de grupos
+
+	O sistema deve permitir o cadastro de grupos de A a L.
+
+RF-02: Gestão de seleções
+
+	O sistema deve permitir o cadastro das 48 seleções, incluindo:
+		
+		Nome
+		Bandeira
+		Abreviação
+		Grupo
+
+	Regra: o grupo deve ser selecionado do cadastro de grupos existente
+
+RF-03: Gestão de Sedes
+
+	O sistema deve permitir cadastro das sedes, incluindo:
+
+		Nome do país
+		Cidade
+		Estádio
+		Capacidade do Estádio
+
+RF-04: Gestão de Partidas
+
+	O sistema deve permitir cadastro das partidas, incluindo:
+
+		Data
+		Horário
+		Sede
+		Seleção mandante
+		Seleção visitante
+
+	Regras: A sede deve ser selecionada; as seleções mandantes e visitantes devem ser selecionadas;
+
+RF-05: Tabela das partidas
+
+	O sistema deve permitir a criação da tabela com as partidas para visualização pelo usuário
+
+	Regras: as partidas precisam ser organizadas em grupo e em data cronológica (ordem de classificação é extremamente necessária)
+
+RF-06: Resultados das Partidas
+
+	O sistema deve permitir a inclusão dos resultados das partidas com a opção de incluir a quantidade de gols que cada seleção marcou
+
+	Regras: os resultados devem ser igual ou maior que 0.
+
+RF-07: Classificação
+
+	O sistema deve permitir a visualização do ranking de cada grupo, mostrando os melhores classificados em primeiro.
+	
+	Regras: os critérios para a geração do ranking deve ser:
+
+		1. Pontuação
+		2. Quantidade de vitórias 
+		3. Saldo de gols
+		4. Verificar os demais critérios...
+
+RF-08: Avanço de Fases
+
+	O sistema deve calcular quais seleções irão avançar para a próxima fase
+
+	Regras: 
+
+		Os 2 primeiros colocados de cada grupo avançam para a próxima fase, totalizando 24;
+		Os 8 melhores colocados dentre os restantes também avançam para a próxima fase, totalizando, assim, 32 seleções.
+		Demais regras verificar-se-á.
+
+===============================================
+
+Entidades: (banco de dados) Qualquer coisa que queiramos guardar informações
+
+	Programação Orientada a Objetos
+
+	Classes:
+
+		- Seleção:
+			Nome (chave candidata) --- chave ruim, pois tem uma grande propenção de mudança | string
+			Bandeira 																		| string
+			Abreviacao (identificação) --- problema se for mudar a língua 					| string 		PRIMARY KEY
+			Grupo 
+
+		- Grupo:
+			ID		| int 
+			Nome	| string
+			Fase	| string
+
+		- Sedes:
+			ID					  | int 		PRIMARY KEY
+			Pais 				  | string
+			Cidade				  | string
+			Estadio				  | string
+			Capacidade do Estádio | int
+
+		- Partida:
+			ID														| int
+			Data													| date
+			Horário													| time
+			Sede (CLASSE PODE SER CARACTERÍSTICA DE OUTRA CLASSE)	| int 		FOREIGN KEY (Sede:id)
+			Time visitante											| string	FOREIGN KEY (Selecao:abreviacao)
+			Time mandante											| string	FOREIGN KEY	(Selecao:abreviacao)
+
+***** Os IDs NÃO PODEM SE REPITIR DE FORMA ALGUMA!!!!!!!!!!!!!!!!!!!!!!!!!! 
+===============================================
+
+NOTAS: 
+
+Create: 	Incluir
+Read: 		Consultar
+Update: 	Alterar 
+Delete: 	Excluir
+
+Trabalhar com BD é Incluir dados, Consultar dados, Alterar dados ou Excluir dados (CRUD)
+
+Regras de negócios = logica de tudo que vc tem que automatizar
+
+---------------------------------------------------
+
+REQUISITOS TÉCNICOS
+
+	DESKTOP:
+		Linguagem: C# (Visual Studio 2022)
+		BD: PostgreSQL
+		Infraestrutura de hospedagem: Windows 10 ou superior
+	WEB:
+		Linguagem:
+			FRONT: HTML, CSS, JS, React
+			BACK: Node.js, JS, PHP (possivelmente) 
+		BD: MySQL ou MariaDB
+		Infraestrutura de hospedagem: 
+			- hospedagem web (1vCPU, 2GB RAM, 50GB armazenamento)
+			- domínio (ver registro.br)
+			- serviço de segurança (CloudFlare ou similar)
+	MOBILE:
+		Linguagem: React Native (JS)
+		BD: sem uso (API)
+		Infraestrutura de hospedagem: Expo (ambiente que simula as lojas desenvolver Android e iPhone)
